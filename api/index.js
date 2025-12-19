@@ -19,9 +19,18 @@ async function connectToDatabase() {
 // Serverless function handler
 module.exports = async (req, res) => {
   try {
+    const origin = req.headers.origin;
+    
     // Set CORS headers
     res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Origin', process.env.FRONTEND_URL || '*');
+    
+    // Allow localhost and all .vercel.app domains
+    if (origin && (origin.includes('localhost') || origin.endsWith('.vercel.app'))) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+    } else {
+      res.setHeader('Access-Control-Allow-Origin', process.env.FRONTEND_URL || '*');
+    }
+    
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS,PATCH');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,Authorization');
 
