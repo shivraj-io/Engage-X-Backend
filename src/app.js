@@ -14,10 +14,16 @@ const newsletterRoutes = require('./routes/newsletter.routes');
 const app = express();
 
 // CORS configuration
-app.use(cors({
-  origin: config.frontendUrl,
+const corsOptions = {
+  origin: [
+    'http://localhost:5173',
+    'https://engage-x-frontend-eo01j3ak8-shivraj-singh-pipawads-projects.vercel.app',
+    'https://engage-x-frontend.vercel.app'
+  ],
   credentials: true
-}));
+};
+
+app.use(cors(corsOptions));
 
 // Body parser middleware
 app.use(express.json());
