@@ -23,6 +23,25 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Root route
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'EngageX Backend API',
+    version: '1.0.0',
+    endpoints: {
+      health: '/health',
+      auth: '/api/auth',
+      admin: '/api/admin',
+      projects: '/api/projects',
+      clients: '/api/clients',
+      contacts: '/api/contacts',
+      newsletter: '/api/newsletter'
+    },
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Health check route
 app.get('/health', (req, res) => {
   res.status(200).json({
