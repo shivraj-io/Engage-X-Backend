@@ -15,11 +15,13 @@ const app = express();
 
 // CORS configuration
 const corsOptions = {
-  origin: [
-    'http://localhost:5173',
-    'https://engage-x-frontend-eo01j3ak8-shivraj-singh-pipawads-projects.vercel.app',
-    'https://engage-x-frontend.vercel.app'
-  ],
+  origin: (origin, callback) => {
+    if (!origin || origin.endsWith('.vercel.app') || origin.includes('localhost')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 };
 
