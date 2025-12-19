@@ -14,18 +14,20 @@ const newsletterRoutes = require('./routes/newsletter.routes');
 const app = express();
 
 // CORS configuration
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || origin.endsWith('.vercel.app') || origin.includes('localhost')) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
+app.use(cors({
+  origin: function(origin, callback) {
+    // Allow requests with no origin (mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+    
+    // Allow localhost and all .vercel.app domains
+    if (origin.includes('localhost') || origin.endsWith('.vercel.app')) {
+      return callback(null, true);
     }
+    
+    callback(new Error('Not allowed by CORS'));
   },
   credentials: true
-};
-
-app.use(cors(corsOptions));
+}));
 
 // Body parser middleware
 app.use(express.json());
